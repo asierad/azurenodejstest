@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<LINK href="/stylesheets/style.css" rel="stylesheet" type="text/css">
+    <title>Cadx Test Framework</title>
+  </head>
+  <body>
+	<h1>Choose the tests you want to run</h1>
+    <form action="/runtests" method="POST">
+        <div class="testsdata">
+            <h2>Tests data</h2>
+            <table>
+                <tr>
+                    <th>
+                        Primary SID
+                    </th>
+                    <td>
+                        <input type="textbox" name="primarysid" value="45f22658-87e3-4a3e-b8ac-4c044b947892" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Secondary SID
+                    </th>
+                    <td>
+                        <input type="textbox" name="secondarysid" value="8F2C8D28-5419-4DE1-980F-6CCBB2EFB1D9"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Server to test
+                    </th>
+                    <td>
+                        <input type="textbox" name="server" value="http://devapp.poweredbycadworx.com"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="tests">
+            <h2>Tests to run</h2>
+            <table>
+	        {{#data}}
+                <tr>
+                    <th>
+                        <input type="checkbox" name="tests" value="{{name}}" />{{name}}
+                    </th>
+                    <td>
+                        Will run the following tests: <br />
+                        <ul>
+			                {{#tests}}
+    			                <li>{{.}}</li>
+			                {{/tests}}
+                        </ul>
+                    </td>
+                </tr>
+	        {{/data}}
+            </table>
+        </div>
+        <input type="submit" value="Submit" />
+    </form>
+  </body>
+<script>
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+$(function() {
+    $('form').submit(function() {
+        var stringForm = JSON.stringify($('form').serializeObject());
+        var inputmodel = $("input[name='model']");
+        if(inputmodel) {
+            inputmodel.remove();
+        };
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'model',
+            value: stringForm
+        }).appendTo('form');
+    });
+});
+
+</script>
+</html>
