@@ -2,7 +2,7 @@
   "name": "NodejsTest",
   "version": "0.0.0",
   "description": "NodejsTest",
-  "main": "app.js",
+  "main": "./other/server.js",
   "author": {
     "name": "Adrian",
     "email": ""
